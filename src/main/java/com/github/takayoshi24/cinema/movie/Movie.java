@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @Entity
 @Getter
@@ -21,12 +20,12 @@ public class Movie {
     private Long id;
     private String title;
     private ZonedDateTime validAt;
-    private String type;
+    private String genre;
 
-    public Movie(String title, ZonedDateTime validAt, String type) {
+    public Movie(String title, ZonedDateTime validAt, String genre) {
         this.title = title;
         this.validAt = validAt;
-        this.type = type;
+        this.genre = genre;
     }
 
     @Override
@@ -35,12 +34,12 @@ public class Movie {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", validAt=" + validAt +
-                ", type=" + type +
+                ", genre=" + genre +
                 '}';
     }
 
-    public void updateReservation(ZonedDateTime validAt, String type) {
+    public void updateReservation(ZonedDateTime validAt, String genre) {
         this.validAt = validAt;
-        this.type = type;
+        this.genre = genre;
     }
 }

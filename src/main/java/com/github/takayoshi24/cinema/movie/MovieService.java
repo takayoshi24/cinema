@@ -1,11 +1,10 @@
 package com.github.takayoshi24.cinema.movie;
 
-import com.github.takayoshi24.cinema.reservation.Reservation;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.Optional;
@@ -19,8 +18,8 @@ public class MovieService {
         this.movieRepository = movieRepository;
     }
 
-    public Page<Movie> findMovieByType(String type, Pageable pageable) {
-        return movieRepository.findAllByType(type,pageable);
+    public Page<Movie> findAllByGenre(String genre, Pageable pageable) {
+        return movieRepository.findAllByGenre(genre,pageable);
     }
 
     public void addNewMovie(Movie movie) {
@@ -41,12 +40,12 @@ public class MovieService {
     }
 
     @Transactional
-    public void updateMovie(Long movieId, ZonedDateTime validAt, String type) {
+    public void updateMovie(Long movieId, ZonedDateTime validAt, String genre) {
         Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new IllegalStateException(
                 "Movie with id: " + movieId + " does not exits"));
         if (validAt != null && !Objects.equals(movie.getValidAt(), validAt) &&
-                type != null && !Objects.equals(movie.getType(), type)) {
-            movie.updateReservation(validAt, type);
+                genre != null && !Objects.equals(movie.getGenre(), genre)) {
+            movie.updateReservation(validAt, genre);
         }
     }
 }

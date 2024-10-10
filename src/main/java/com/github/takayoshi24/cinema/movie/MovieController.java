@@ -1,10 +1,10 @@
 package com.github.takayoshi24.cinema.movie;
 
-import com.github.takayoshi24.cinema.reservation.Reservation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Pageable;
 
-import java.awt.print.Pageable;
 import java.time.ZonedDateTime;
 
 @RestController
@@ -12,16 +12,17 @@ public class MovieController {
 
     private final MovieService movieService;
 
+    @Autowired
     public MovieController(MovieService movieService) {
         this.movieService = movieService;
     }
 
-    @GetMapping(params = {"type"})
-    public Page<Movie> getMovieByType(@RequestParam String  type, Pageable pageable){
-        return movieService.findMovieByType(type,pageable);
+    @GetMapping(params = {"genre"})
+    public Page<Movie> getMovieByGenre(@RequestParam String  genre, Pageable pageable){
+        return movieService.findAllByGenre(genre,pageable);
     }
 
-    @PostMapping
+    @PostMapping(value="/movie")
     public void registerNewMovie(@RequestBody Movie movie){
         movieService.addNewMovie(movie);
     }
@@ -35,7 +36,7 @@ public class MovieController {
     public void updateMovie(
             @PathVariable("movieId") Long movieId,
             @RequestParam(required = false) ZonedDateTime validAt,
-            @RequestParam(required = false) String type){
-        movieService.updateMovie(movieId, validAt, type);
+            @RequestParam(required = false) String genre){
+        movieService.updateMovie(movieId, validAt, genre);
     }
 }

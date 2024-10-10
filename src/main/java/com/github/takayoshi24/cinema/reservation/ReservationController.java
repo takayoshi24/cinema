@@ -1,11 +1,11 @@
 package com.github.takayoshi24.cinema.reservation;
 
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Pageable;
 
-import java.awt.print.Pageable;
+
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class ReservationController {
 
     @GetMapping(params = {"email"})
     public Page<Reservation> getReservationsByEmail(@RequestParam String  email, Pageable pageable){
-        return reservationService.getReservationsByEmail(email,pageable);
+        return reservationService.getReservationsByEmail(email, pageable);
     }
 
     @GetMapping
@@ -29,7 +29,7 @@ public class ReservationController {
         return reservationService.getReservations();
     }
 
-    @PostMapping
+    @PostMapping(value="/reservation")
     public void registerNewReservation(@RequestBody Reservation reservation){
         reservationService.addNewReservation(reservation);
     }
