@@ -15,5 +15,4 @@ public interface ReservationRepository extends JpaRepository <Reservation,Long> 
     Page<Reservation> findAllByEmail(String email, Pageable pageable);
     List<Reservation> findAllByValidAtBetween(ZonedDateTime start, ZonedDateTime end);
     Optional<Reservation> findByTitleAndSeatPositionNumber(String title, Integer seatPositionNumber);
-    Optional<Reservation> findByTitleAndValidAtAndSeatPositionNumber(String title, ZonedDateTime validAt, Integer seatPositionNumber);
 }
