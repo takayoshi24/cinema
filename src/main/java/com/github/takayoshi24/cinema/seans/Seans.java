@@ -9,7 +9,7 @@ import java.time.ZonedDateTime;
 
 @Entity
 @Getter
-@Table
+@Table (uniqueConstraints = { @UniqueConstraint(columnNames = { "movie_id", "room" }) })
 @NoArgsConstructor
 public class Seans {
     @Id
