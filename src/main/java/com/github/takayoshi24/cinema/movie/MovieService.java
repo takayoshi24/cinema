@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -24,9 +23,9 @@ public class MovieService {
 
     public void addNewMovie(Movie movie) {
         Optional<Movie> movieOptional =
-                movieRepository.findByTitleAndValidAt(movie.getTitle(), movie.getValidAt());
+                movieRepository.findByTitle(movie.getTitle());
         if (!movieOptional.isPresent()) {
-            throw new IllegalStateException("Title: " + movie.getTitle() + " for day: " + movie.getValidAt() + " does exist");
+            throw new IllegalStateException("Title: " + movie.getTitle() + " does exist");
         }
         movieRepository.save(movie);
     }
@@ -34,18 +33,18 @@ public class MovieService {
     public void deleteMovie(Long movieId) {
         boolean exits = movieRepository.existsById(movieId);
         if (!exits) {
-            throw new IllegalStateException("Reservation with id: " + movieId + " does not exits");
+            throw new IllegalStateException("Movie with id: " + movieId + " does not exits");
         }
         movieRepository.deleteById(movieId);
     }
 
     @Transactional
-    public void updateMovie(Long movieId, ZonedDateTime validAt, String genre) {
+    public void updateMovie(Long movieId, String genre, String title) {
         Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new IllegalStateException(
                 "Movie with id: " + movieId + " does not exits"));
-        if (validAt != null && !Objects.equals(movie.getValidAt(), validAt) &&
+        if (title != null && !Objects.equals(movie.getTitle(), title) &&
                 genre != null && !Objects.equals(movie.getGenre(), genre)) {
-            movie.updateMovie(validAt, genre);
+            movie.updateMovie(genre, title);
         }
     }
 }

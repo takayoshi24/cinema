@@ -1,13 +1,13 @@
 package com.github.takayoshi24.cinema.reservation;
 
+import com.github.takayoshi24.cinema.seans.Seans;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import java.time.ZonedDateTime;
 
 @Entity
-@Table//(uniqueConstraints = { @UniqueConstraint(columnNames = { "seans", "seatPositionNumber" }) })
 @Getter
+@Table (uniqueConstraints = { @UniqueConstraint(columnNames = { "seans_id", "seatPositionNumber" }) })
 @NoArgsConstructor
 public class Reservation {
     @Id
@@ -17,20 +17,14 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator = "reservation_sequence")
     private Long id;
-    private String title;
     private String email;
-    private ZonedDateTime validAt;
+    @ManyToOne
+    @JoinColumn(name = "seans_id")
+    private Seans seans;
     private Integer seatPositionNumber;
 
-    public void updateReservation(ZonedDateTime validAt, Integer seatPositionNumber ){
-        this.validAt = validAt;
-        this.seatPositionNumber = seatPositionNumber;
-    }
-
-    public Reservation(String title, String email, ZonedDateTime dob, Integer seatPositionNumber) {
-        this.title = title;
-        this.email = email;
-        this.validAt = dob;
+    public void updateReservation(Seans seans, Integer seatPositionNumber ){
+        this.seans = seans;
         this.seatPositionNumber = seatPositionNumber;
     }
 
@@ -39,9 +33,8 @@ public class Reservation {
     public String toString() {
         return "Reservation{" +
                 "id=" + id +
-                ", title='" + title + '\'' +
                 ", email='" + email + '\'' +
-                ", validAt=" + validAt +
+                ", seans=" + seans +
                 ", seatPositionNumber=" + seatPositionNumber +
                 '}';
     }

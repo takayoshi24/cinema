@@ -27,7 +27,7 @@ public class SeansService {
         Optional<Seans> seansOptional =
                 seansRepository.findByMovieAndValidAtAndRoom(seans.getMovie(), seans.getValidAt(),seans.getRoom());
         if (!seansOptional.isPresent()) {
-            throw new IllegalStateException("Movie: " + seans.getMovie()+ " for day: "
+            throw new IllegalStateException("Movie: " + seans.getMovie().getTitle()+ " for day: "
                     + seans.getValidAt() + " and for room: "+ seans.getRoom() +" does exist");
         }
         seansRepository.save(seans);

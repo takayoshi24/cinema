@@ -1,12 +1,11 @@
 package com.github.takayoshi24.cinema.reservation;
 
+import com.github.takayoshi24.cinema.seans.Seans;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
-
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
@@ -42,9 +41,9 @@ public class ReservationController {
     @PutMapping(path = "{reservationId}")
     public void updateReservation(
             @PathVariable("reservationId") Long reservationId,
-            @RequestParam(required = false) ZonedDateTime validAt,
+            @RequestParam(required = false) Seans seans,
             @RequestParam(required = false) Integer seatPositionNumber){
-        reservationService.updateReservation(reservationId, validAt, seatPositionNumber);
+        reservationService.updateReservation(reservationId, seans, seatPositionNumber);
     }
 
 

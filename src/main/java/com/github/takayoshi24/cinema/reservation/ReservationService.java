@@ -1,12 +1,12 @@
 package com.github.takayoshi24.cinema.reservation;
 
+import com.github.takayoshi24.cinema.seans.Seans;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,9 +30,9 @@ public class ReservationService {
 
     public void addNewReservation(Reservation reservation) {
         Optional<Reservation> reservationOptional =
-                reservationRepository.findByTitleAndSeatPositionNumber(reservation.getTitle(), reservation.getSeatPositionNumber());
+                reservationRepository.findBySeansAndSeatPositionNumber(reservation.getSeans(), reservation.getSeatPositionNumber());
         if (reservationOptional.isPresent()) {
-            throw new IllegalStateException("Seat nr.: " + reservation.getSeatPositionNumber() + " for title: " + reservation.getTitle());
+            throw new IllegalStateException("Seat nr.: " + reservation.getSeatPositionNumber() + " for title: " + reservation.getSeans().getMovie().getTitle());
         }
         reservationRepository.save(reservation);
     }
@@ -46,12 +46,12 @@ public class ReservationService {
     }
 
     @Transactional
-    public void updateReservation(Long reservationId, ZonedDateTime validAt, Integer seatPositionNumber) {
+    public void updateReservation(Long reservationId, Seans seans, Integer seatPositionNumber) {
         Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(() -> new IllegalStateException(
                 "Reservation with id: " + reservationId + " does not exits"));
-        if (validAt != null && !Objects.equals(reservation.getValidAt(), validAt) &&
+        if (seans != null && !Objects.equals(reservation.getSeans(), seans) &&
                 seatPositionNumber != null && seatPositionNumber > 0 && !Objects.equals(reservation.getSeatPositionNumber(), seatPositionNumber)) {
-             reservation.updateReservation(validAt, seatPositionNumber);
+             reservation.updateReservation(seans, seatPositionNumber);
             }
     }
 

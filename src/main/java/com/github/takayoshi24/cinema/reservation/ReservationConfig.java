@@ -1,16 +1,11 @@
 package com.github.takayoshi24.cinema.reservation;
 
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.time.*;
-import java.util.List;
 
 @Configuration
 public class ReservationConfig {
 
-    @Bean
+    /*@Bean
     CommandLineRunner commandLineRunner(ReservationRepository repository){
         return args -> {
             Reservation reservation = new Reservation(
@@ -21,5 +16,5 @@ public class ReservationConfig {
 
             repository.save(reservation);
         };
-    }
+    }*/
 }

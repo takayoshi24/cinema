@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.ZonedDateTime;
-
 @Entity
 @Getter
 @Table
@@ -19,12 +17,10 @@ public class Movie {
             generator = "movie_sequence")
     private Long id;
     private String title;
-    private ZonedDateTime validAt;
     private String genre;
 
-    public Movie(String title, ZonedDateTime validAt, String genre) {
+    public Movie(String title, String genre) {
         this.title = title;
-        this.validAt = validAt;
         this.genre = genre;
     }
 
@@ -33,14 +29,13 @@ public class Movie {
         return "Movie{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", validAt=" + validAt +
                 ", genre=" + genre +
                 '}';
     }
 
-    public void updateMovie(ZonedDateTime validAt, String genre) {
-        this.validAt = validAt;
+    public void updateMovie(String genre, String title) {
         this.genre = genre;
+        this.title = title;
     }
 
 }

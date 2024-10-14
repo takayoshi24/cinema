@@ -1,19 +1,19 @@
 package com.github.takayoshi24.cinema.seans;
 
 import com.github.takayoshi24.cinema.movie.Movie;
-import com.github.takayoshi24.cinema.reservation.Reservation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @RestController
 public class SeansController {
 
     private final SeansService seansService;
 
+    @Autowired
     public SeansController(SeansService seansService) {
         this.seansService = seansService;
     }
