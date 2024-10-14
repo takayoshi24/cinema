@@ -30,4 +30,19 @@ public class Seans {
         this.validAt = validAt;
         this.room = room;
     }
+
+    public void updateSeans(ZonedDateTime validAt, Integer room ){
+        this.validAt = validAt;
+        this.room = room;
+    }
+
+    @Override
+    public String toString() {
+        return "Seans{" +
+                "id=" + id +
+                ", movie=" + movie +
+                ", validAt=" + validAt +
+                ", room=" + room +
+                '}';
+    }
 }

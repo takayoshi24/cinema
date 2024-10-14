@@ -22,7 +22,7 @@ public class MovieController {
         return movieService.findAllByGenre(genre,pageable);
     }
 
-    @PostMapping(value="/movie")
+    @PostMapping(path="/movie")
     public void registerNewMovie(@RequestBody Movie movie){
         movieService.addNewMovie(movie);
     }

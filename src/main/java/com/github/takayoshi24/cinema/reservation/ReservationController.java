@@ -29,7 +29,7 @@ public class ReservationController {
         return reservationService.getReservations();
     }
 
-    @PostMapping(value="/reservation")
+    @PostMapping(path="/reservation")
     public void registerNewReservation(@RequestBody Reservation reservation){
         reservationService.addNewReservation(reservation);
     }

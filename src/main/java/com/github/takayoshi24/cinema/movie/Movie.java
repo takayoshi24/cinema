@@ -38,8 +38,9 @@ public class Movie {
                 '}';
     }
 
-    public void updateReservation(ZonedDateTime validAt, String genre) {
+    public void updateMovie(ZonedDateTime validAt, String genre) {
         this.validAt = validAt;
         this.genre = genre;
     }
+
 }

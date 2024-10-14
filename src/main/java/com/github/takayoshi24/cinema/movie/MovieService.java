@@ -45,7 +45,7 @@ public class MovieService {
                 "Movie with id: " + movieId + " does not exits"));
         if (validAt != null && !Objects.equals(movie.getValidAt(), validAt) &&
                 genre != null && !Objects.equals(movie.getGenre(), genre)) {
-            movie.updateReservation(validAt, genre);
+            movie.updateMovie(validAt, genre);
         }
     }
 }

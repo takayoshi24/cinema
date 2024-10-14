@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import java.time.ZonedDateTime;
 
 @Entity
-@Table
+@Table//(uniqueConstraints = { @UniqueConstraint(columnNames = { "seans", "seatPositionNumber" }) })
 @Getter
 @NoArgsConstructor
 public class Reservation {
