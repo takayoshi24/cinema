@@ -5,11 +5,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
+import java.util.UUID;
 
-public interface MovieRepository extends JpaRepository<Movie,Long> {
+public interface MovieRepository extends JpaRepository<Movie, UUID> {
 
     Optional<Movie> findFirstByGenre(String genre);
     Page<Movie> findAllByGenre(String genre, Pageable pageable);
-    Optional<Movie> findByTitle(String title);
+    Optional<Movie> findFirstByTitle(String title);
 
 }

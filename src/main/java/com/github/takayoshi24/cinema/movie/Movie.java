@@ -1,8 +1,11 @@
 package com.github.takayoshi24.cinema.movie;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -10,13 +13,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Movie {
     @Id
-    @SequenceGenerator(name = "movie_sequence",
-            sequenceName = "movie_sequence",
-            allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "movie_sequence")
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    @NotBlank
     private String title;
+    @NotBlank
     private String genre;
 
     public Movie(String title, String genre) {
@@ -24,6 +25,10 @@ public class Movie {
         this.genre = genre;
     }
 
+    public Movie(MovieCreateDTO dto){
+        this.title = dto.title();
+        this.genre = dto.genre();
+    }
     @Override
     public String toString() {
         return "Movie{" +

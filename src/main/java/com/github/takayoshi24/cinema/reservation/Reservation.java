@@ -1,30 +1,43 @@
 package com.github.takayoshi24.cinema.reservation;
 
-import com.github.takayoshi24.cinema.seans.Seans;
+import com.github.takayoshi24.cinema.seance.Seance;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Entity
 @Getter
-@Table (uniqueConstraints = { @UniqueConstraint(columnNames = { "seans_id", "seatPositionNumber" }) })
+@Table (uniqueConstraints = { @UniqueConstraint(columnNames = { "seance_id", "seatPositionNumber" }) })
 @NoArgsConstructor
 public class Reservation {
     @Id
-    @SequenceGenerator(name = "reservation_sequence",
-            sequenceName = "reservation_sequence",
-            allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "reservation_sequence")
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    @NotBlank
     private String email;
     @ManyToOne
-    @JoinColumn(name = "seans_id")
-    private Seans seans;
+    @NotNull
+    private Seance seance;
+    @NotNull
     private Integer seatPositionNumber;
 
-    public void updateReservation(Seans seans, Integer seatPositionNumber ){
-        this.seans = seans;
+    public Reservation(String email, Seance seance, Integer seatPositionNumber) {
+        this.email = email;
+        this.seance = seance;
+        this.seatPositionNumber = seatPositionNumber;
+    }
+
+    public Reservation(ReservationCreateDTO dto){
+        this.email = dto.email();
+        this.seatPositionNumber = dto.seatPositionNumber();
+        this.seance = dto.seance();
+    }
+    public void updateReservation(Seance seance, Integer seatPositionNumber ){
+        this.seance = seance;
         this.seatPositionNumber = seatPositionNumber;
     }
 
@@ -34,7 +47,7 @@ public class Reservation {
         return "Reservation{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
-                ", seans=" + seans +
+                ", seans=" + seance +
                 ", seatPositionNumber=" + seatPositionNumber +
                 '}';
     }

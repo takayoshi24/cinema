@@ -1,21 +1,25 @@
 package com.github.takayoshi24.cinema.reservation;
 
-import com.github.takayoshi24.cinema.seans.Seans;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
+@RequiredArgsConstructor
 @RestController
+@RequestMapping("/reservations")
 public class ReservationController {
 
     private final ReservationService reservationService;
 
-    @Autowired
-    public ReservationController(ReservationService reservationService) {
-        this.reservationService = reservationService;
+    @PostMapping
+    public ReservationDTO registerNewReservation(@Valid @RequestBody ReservationCreateDTO reservationData){
+        Reservation reservation = reservationService.addNewReservation(reservationData);
+        return new ReservationDTO(reservation);
     }
 
     @GetMapping(params = {"email"})
@@ -28,22 +32,19 @@ public class ReservationController {
         return reservationService.getReservations();
     }
 
-    @PostMapping(path="/reservation")
-    public void registerNewReservation(@RequestBody Reservation reservation){
-        reservationService.addNewReservation(reservation);
+
+    @PutMapping(path = "/{reservationId}")
+    public ReservationDTO updateReservation(
+            @PathVariable("reservationId") UUID reservationId,
+            @RequestBody ReservationCreateDTO reservationData){
+       Reservation reservation = reservationService.updateReservation(reservationId, reservationData.seance(), reservationData.seatPositionNumber());
+       return new ReservationDTO(reservation);
     }
 
     @DeleteMapping(path = "{reservationId}")
-    public void deleteReservation(@PathVariable("reservationId") Long reservationId){
+    public String deleteReservation(@PathVariable("reservationId") UUID reservationId){
         reservationService.deleteReservation(reservationId);
-    }
-
-    @PutMapping(path = "{reservationId}")
-    public void updateReservation(
-            @PathVariable("reservationId") Long reservationId,
-            @RequestParam(required = false) Seans seans,
-            @RequestParam(required = false) Integer seatPositionNumber){
-        reservationService.updateReservation(reservationId, seans, seatPositionNumber);
+        return "Reservation has been deleted";
     }
 
 
