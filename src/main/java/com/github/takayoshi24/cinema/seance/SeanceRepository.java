@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface SeanceRepository extends JpaRepository<Seance, UUID> {
 
-    Optional<Seance> findByMovieAndStartingAtAndRoom(Movie movie, ZonedDateTime validAt, Integer room);
+    Optional<Seance> findByMovieIdAndStartingAtAndRoom(UUID movieId, ZonedDateTime validAt, Integer room);
 
     Page<Seance> findAllByMovie(Movie movie, Pageable pageable);
 }

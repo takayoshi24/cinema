@@ -36,8 +36,8 @@ public class ReservationController {
     @PutMapping(path = "/{reservationId}")
     public ReservationDTO updateReservation(
             @PathVariable("reservationId") UUID reservationId,
-            @RequestBody ReservationCreateDTO reservationData){
-       Reservation reservation = reservationService.updateReservation(reservationId, reservationData.seance(), reservationData.seatPositionNumber());
+            @RequestBody ReservationUpdateDTO reservationData){
+       Reservation reservation = reservationService.updateReservation(reservationId, reservationData.seatPositionNumber());
        return new ReservationDTO(reservation);
     }
 

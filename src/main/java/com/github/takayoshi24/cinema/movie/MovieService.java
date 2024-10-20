@@ -18,6 +18,10 @@ public class MovieService {
         return movieRepository.findAll(pageable);
     }
 
+    public Optional<Movie> getMovieById(UUID id){
+        return movieRepository.findById(id);
+    }
+
     public Page<Movie> findAllByGenre(String genre, Pageable pageable) {
         return movieRepository.findAllByGenre(genre,pageable);
     }

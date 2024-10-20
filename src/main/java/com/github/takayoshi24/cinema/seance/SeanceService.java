@@ -1,6 +1,7 @@
 package com.github.takayoshi24.cinema.seance;
 
 import com.github.takayoshi24.cinema.movie.Movie;
+import com.github.takayoshi24.cinema.movie.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import java.util.UUID;
 public class SeanceService {
 
     private final SeanceRepository seanceRepository;
+    private final MovieService movieService;
 
     public Page<Seance> getAllSeance(Pageable pageable){
         return seanceRepository.findAll(pageable);
@@ -24,14 +26,21 @@ public class SeanceService {
         return seanceRepository.findAllByMovie(movie,pageable);
     }
 
+    public Optional<Seance> getSeanceById(UUID id){
+        return seanceRepository.findById(id);
+    }
+
     public Seance addNewSeance(SeanceCreateDTO seanceData) {
         Optional<Seance> seanceOptional =
-                seanceRepository.findByMovieAndStartingAtAndRoom(seanceData.movie(), seanceData.startingAt(), seanceData.room());
+                seanceRepository.findByMovieIdAndStartingAtAndRoom(seanceData.movieId(), seanceData.startingAt(), seanceData.room());
+        Movie movie = movieService.getMovieById(seanceData.movieId()).orElseThrow( () ->
+                new IllegalStateException("Movie with id: " + seanceData.movieId() + " does not exits")
+        );
         if (seanceOptional.isPresent()) {
-            throw new IllegalStateException("Movie: " + seanceData.movie().getTitle()+ " for day: "
+            throw new IllegalStateException("Movie: " + movie.getTitle()+ " for day: "
                     + seanceData.startingAt() + " and for room: "+ seanceData.room() +" does not exist");
         }
-        Seance seance = new Seance(seanceData);
+        Seance seance = new Seance(seanceData,movie);
         seanceRepository.save(seance);
         return seance;
     }

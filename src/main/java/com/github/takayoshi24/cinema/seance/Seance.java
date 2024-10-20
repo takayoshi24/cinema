@@ -33,8 +33,8 @@ public class Seance {
         this.room = room;
     }
 
-    public Seance(SeanceCreateDTO dto){
-        this.movie = dto.movie();
+    public Seance(SeanceCreateDTO dto, Movie movie){
+        this.movie = movie;
         this.startingAt = dto.startingAt();
         this.room = dto.room();
     }

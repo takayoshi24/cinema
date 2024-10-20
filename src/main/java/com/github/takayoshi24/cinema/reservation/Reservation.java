@@ -31,13 +31,12 @@ public class Reservation {
         this.seatPositionNumber = seatPositionNumber;
     }
 
-    public Reservation(ReservationCreateDTO dto){
+    public Reservation(ReservationCreateDTO dto, Seance seance){
         this.email = dto.email();
         this.seatPositionNumber = dto.seatPositionNumber();
-        this.seance = dto.seance();
-    }
-    public void updateReservation(Seance seance, Integer seatPositionNumber ){
         this.seance = seance;
+    }
+    public void updateReservation(Integer seatPositionNumber ){
         this.seatPositionNumber = seatPositionNumber;
     }
 

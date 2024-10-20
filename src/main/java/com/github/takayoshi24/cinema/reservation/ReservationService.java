@@ -1,6 +1,9 @@
 package com.github.takayoshi24.cinema.reservation;
 
 import com.github.takayoshi24.cinema.seance.Seance;
+import com.github.takayoshi24.cinema.seance.SeanceRepository;
+import com.github.takayoshi24.cinema.seance.SeanceService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,14 +13,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class ReservationService {
     private final ReservationRepository reservationRepository;
-
-    @Autowired
-    public ReservationService(ReservationRepository reservationRepository) {
-        this.reservationRepository = reservationRepository;
-    }
+    private final SeanceService seanceService;
 
     public List<Reservation> getReservations() {
         return reservationRepository.findAll();
@@ -29,11 +29,14 @@ public class ReservationService {
 
     public Reservation addNewReservation(ReservationCreateDTO reservationData) {
         Optional<Reservation> reservationOptional =
-                reservationRepository.findFirstBySeanceAndSeatPositionNumber(reservationData.seance(), reservationData.seatPositionNumber());
+                reservationRepository.findFirstBySeanceIdAndSeatPositionNumber(reservationData.seanceId(), reservationData.seatPositionNumber());
+        Seance seance = seanceService.getSeanceById(reservationData.seanceId()).orElseThrow( () ->
+                new IllegalStateException("Movie with id: " + reservationData.seanceId() + " does not exits")
+        );
         if (reservationOptional.isPresent()) {
-            throw new IllegalStateException("Seat nr.: " + reservationData.seatPositionNumber() + " for title: " +reservationData.seance().getMovie().getTitle());
+            throw new IllegalStateException("Seat nr.: " + reservationData.seatPositionNumber() + " for title: " +seance.getMovie().getTitle());
         }
-       Reservation reservation = new Reservation(reservationData);
+       Reservation reservation = new Reservation(reservationData,seance);
                reservationRepository.save(reservation);
         return reservation;
     }
@@ -46,10 +49,10 @@ public class ReservationService {
         reservationRepository.deleteById(reservationId);
     }
 
-    public Reservation updateReservation(UUID reservationId, Seance seance, Integer seatPositionNumber) {
+    public Reservation updateReservation(UUID reservationId, Integer seatPositionNumber) {
         Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(() -> new IllegalStateException(
                 "Reservation with id: " + reservationId + " does not exits"));
-        reservation.updateReservation(seance, seatPositionNumber);
+        reservation.updateReservation(seatPositionNumber);
         reservationRepository.save(reservation);
         return reservation;
 

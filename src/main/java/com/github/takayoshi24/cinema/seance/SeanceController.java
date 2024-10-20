@@ -36,7 +36,7 @@ public class SeanceController {
     @PutMapping(path = "{seanceId}")
     public SeanceDTO updateSeance(
             @PathVariable("seanceId") UUID seanceId,
-            @RequestBody SeanceCreateDTO seanceData){
+            @RequestBody SeanceUpdateDTO seanceData){
         Seance seance = seanceService.updateSeance(seanceId, seanceData.startingAt(), seanceData.room());
         return new SeanceDTO(seance);
     }
