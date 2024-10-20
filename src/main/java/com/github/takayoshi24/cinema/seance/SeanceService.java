@@ -38,7 +38,7 @@ public class SeanceService {
         );
         if (seanceOptional.isPresent()) {
             throw new IllegalStateException("Movie: " + movie.getTitle()+ " for day: "
-                    + seanceData.startingAt() + " and for room: "+ seanceData.room() +" does not exist");
+                    + seanceData.startingAt() + " and for room: "+ seanceData.room() +" does exist");
         }
         Seance seance = new Seance(seanceData,movie);
         seanceRepository.save(seance);

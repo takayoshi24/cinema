@@ -34,7 +34,8 @@ public class ReservationService {
                 new IllegalStateException("Movie with id: " + reservationData.seanceId() + " does not exits")
         );
         if (reservationOptional.isPresent()) {
-            throw new IllegalStateException("Seat nr.: " + reservationData.seatPositionNumber() + " for title: " +seance.getMovie().getTitle());
+            throw new IllegalStateException("Seat nr.: " + reservationData.seatPositionNumber() +
+                    " for title: " +seance.getMovie().getTitle() + "does exist");
         }
        Reservation reservation = new Reservation(reservationData,seance);
                reservationRepository.save(reservation);
