@@ -6,5 +6,4 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 public record SeanceCreateDTO(@NotNull UUID movieId, @NotNull ZonedDateTime startingAt, @NotNull Integer room) {
-
 }
